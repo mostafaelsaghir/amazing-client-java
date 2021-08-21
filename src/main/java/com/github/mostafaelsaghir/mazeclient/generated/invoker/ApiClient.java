@@ -54,7 +54,7 @@ import java.util.TimeZone;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2021-08-12T19:03:45.973+02:00")
 @Component("com.github.mostafaelsaghir.mazeclient.invoker.ApiClient")
-public class ApiClient {
+public class ApiClient  {
     public enum CollectionFormat {
         CSV(","), TSV("\t"), SSV(" "), PIPES("|"), MULTI(null);
 
