@@ -112,15 +112,7 @@ public class MazeSolver {
     }
 
     private static Optional<Stack<MoveAction.DirectionEnum>> FindBestCollectStack(List<Stack<MoveAction.DirectionEnum >> collectNodes, List<Stack<MoveAction.DirectionEnum >> exitNodes) {
-         collectNodes.sort(((o1, o2) -> {
-            if (o1.size() > o2.size())
-                return -1;
-            else if (o1.size() < o2.size())
-                return 1;
-            else
-                return 0;
-        }));
-          return collectNodes.stream().findFirst();
+          return collectNodes.stream().sorted(Comparator.comparingInt(ma -> ma.size())).findFirst();
 
     }
 
@@ -180,30 +172,31 @@ public class MazeSolver {
 
 
 
-    private static Optional<MoveAction> bestDirForCollect(PossibleActionsAndCurrentScore options, Stack<MoveAction.DirectionEnum> arroundNodes) {
+    public static Optional<MoveAction> bestDirForCollect(PossibleActionsAndCurrentScore options, Stack<MoveAction.DirectionEnum> arroundNodes) {
         var notVisted = options.getPossibleMoveActions().stream().filter(ma -> !ma.isHasBeenVisited())
+                .sorted(Comparator
+                        .comparing((MoveAction ma) -> ma.getRewardOnDestination() == 0)
+                        .thenComparing(ma -> MazeSolver.LeftWallAlgorithm(ma.getDirection(), arroundNodes))
+                        .thenComparing(ma -> ma.getDirection().ordinal()*-1))
                 .collect(Collectors.toList());
-            notVisted.sort(Comparator.comparing(ma -> ma.getRewardOnDestination() ==0));
-            notVisted.sort(Comparator.comparing(ma -> MazeSolver.LeftWallAlgorithm(ma.getDirection(),arroundNodes)));
-            Collections.reverse(notVisted);
 
-            var mostUsefulDir = notVisted.stream().findFirst();
-        return mostUsefulDir;
+
+        return notVisted.stream().findFirst();
     }
 
     private static Optional<MoveAction> bestForCollectNode (PossibleActionsAndCurrentScore options, Stack<MoveAction.DirectionEnum> arroundNodes) {
         var notVisted = options.getPossibleMoveActions().stream().filter(ma -> !ma.isHasBeenVisited())
+                .sorted(Comparator.comparing(MoveAction::isAllowsExit)
+                .thenComparing(ma -> MazeSolver.LeftWallAlgorithm(ma.getDirection(),arroundNodes)))
               .collect(Collectors.toList());
-
-
-        notVisted.sort(Comparator.comparing(MoveAction::isAllowsExit));
-        notVisted.sort(Comparator.comparing(ma -> MazeSolver.LeftWallAlgorithm(ma.getDirection(),arroundNodes)));
         return notVisted.stream().findFirst();
     }
 
     private static Optional<MoveAction> bestForLocatExit(PossibleActionsAndCurrentScore options, Stack<MoveAction.DirectionEnum> arroundNodes) {
-        var notVisted = options.getPossibleMoveActions().stream().filter(ma -> !ma.isHasBeenVisited()).collect(Collectors.toList());
-        notVisted.sort(Comparator.comparing(ma -> MazeSolver.LeftWallAlgorithm(ma.getDirection(),arroundNodes)));
+        var notVisted = options.getPossibleMoveActions().stream().filter(ma -> !ma.isHasBeenVisited())
+                .sorted(Comparator.comparing(ma -> MazeSolver.LeftWallAlgorithm(ma.getDirection(),arroundNodes)))
+                .collect(Collectors.toList());
+//        notVisted.sort(Comparator.comparing(ma -> MazeSolver.LeftWallAlgorithm(ma.getDirection(),arroundNodes)));
         return notVisted.stream().findFirst();
     }
 

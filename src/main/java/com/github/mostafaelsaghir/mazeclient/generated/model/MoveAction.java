@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "A tile")
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2021-08-12T19:03:45.973+02:00")
+@Data
 public class MoveAction {
   /**
    * What is the relative direction of this tile.

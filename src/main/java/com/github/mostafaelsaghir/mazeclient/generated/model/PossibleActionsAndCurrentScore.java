@@ -16,6 +16,7 @@ package com.github.mostafaelsaghir.mazeclient.generated.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +26,7 @@ import java.util.Objects;
  */
 @ApiModel(description = "From the current tile where you stand, what actions are available on it and on the surrounding tiles.")
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2021-08-12T19:03:45.973+02:00")
+@Data
 public class PossibleActionsAndCurrentScore {
   @JsonProperty("possibleMoveActions")
   private List<MoveAction> possibleMoveActions = null;
